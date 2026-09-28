@@ -23,5 +23,5 @@ static/images/turns/     per-turn tiles for the interactive explorers
 
 ## TODO before release
 
-- Replace the placeholder `href="#"` links marked `data-soon` in `index.html` (Paper / arXiv / Models / LME-Bench) and remove their `soon` tags.
+- Replace the placeholder `href="#"` links marked `data-soon` in `index.html` (Paper / arXiv) and remove their `soon` tags.
 - Update the BibTeX entry once the arXiv ID is available.
