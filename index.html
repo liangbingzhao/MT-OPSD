@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MT-OPSD: On-Policy Self-Distillation for Multi-Turn Image Editing</title>
+  <meta name="description" content="MT-OPSD trains image editors on their own self-generated states with supervision from a clean-conditioned teacher, preventing multi-turn collapse without multi-turn annotations.">
+  <meta name="keywords" content="MT-OPSD, multi-turn image editing, on-policy self-distillation, LME-Bench, image editing, diffusion, flow matching">
+  <meta name="author" content="Liangbing Zhao, Le Zhuo, Mohamed Elhoseiny">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MT-OPSD: On-Policy Self-Distillation for Multi-Turn Image Editing">
+  <meta property="og:description" content="Image editors collapse when they repeatedly edit their own outputs. MT-OPSD fixes this by training on self-generated states — no multi-turn annotations required.">
+  <meta property="og:image" content="static/images/teaser.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MT-OPSD: On-Policy Self-Distillation for Multi-Turn Image Editing">
+  <meta name="twitter:image" content="static/images/teaser.jpg">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f172a'/%3E%3Crect x='12' y='12' width='18' height='18' rx='3' fill='%234f78b0'/%3E%3Crect x='34' y='12' width='18' height='18' rx='3' fill='%23c8625a'/%3E%3Crect x='12' y='34' width='18' height='18' rx='3' fill='%23a9832f'/%3E%3Crect x='34' y='34' width='18' height='18' rx='3' fill='%232f55d4'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<nav class="nav" id="nav">
+  <a class="brand" href="#top">MT<span>-</span>OPSD</a>
+  <ul>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#method">Method</a></li>
+    <li><a href="#benchmark">LME-Bench</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#bibtex">BibTeX</a></li>
+  </ul>
+  <button class="theme-btn" data-theme-toggle aria-label="Toggle dark mode"></button>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero" id="top">
+  <button class="theme-btn" data-theme-toggle aria-label="Toggle dark mode"></button>
+  <div class="wrap">
+    <div class="eyebrow"><span class="pill">MT-OPSD</span> Robust long-horizon image editing</div>
+
+    <h1 class="title">On-Policy Self-Distillation for <em class="nowrap">Multi&#8209;Turn</em> Image Editing</h1>
+
+    <p class="subtitle">
+      Editing models fall apart when they keep editing their own outputs.
+      We teach them to stay stable by learning from their own mistakes.
+    </p>
+
+    <div class="authors">
+      <a href="https://liangbingzhao.github.io/" target="_blank" rel="noopener">Liangbing Zhao</a><sup>1</sup><span class="sep">·</span>
+      <a href="https://le-zhuo.com/" target="_blank" rel="noopener">Le Zhuo</a><sup>2</sup><span class="sep">·</span>
+      <a href="https://cemse.kaust.edu.sa/profiles/mohamed-elhoseiny" target="_blank" rel="noopener">Mohamed Elhoseiny</a><sup>1</sup>
+    </div>
+    <div class="affils">
+      <span><sup>1</sup>KAUST</span>
+      <span><sup>2</sup>Krea AI</span>
+    </div>
+
+    <!-- TODO: replace the placeholder links (href) once the arXiv paper / code / data are public,
+         and remove the <span class="soon"> tags. -->
+    <div class="links">
+      <a class="btn" href="#" data-soon title="Coming soon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h6"/></svg>
+        Paper <span class="soon">soon</span>
+      </a>
+      <a class="btn" href="#" data-soon title="Coming soon">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.6 3.2h3.1l5.5 7.4-2.3 2.9zM19.4 3.2l-7 8.8 7.4 8.8h-3l-6-7.1 1.5-1.9 4.6-5.6 1.3-1.6 1.2-1.4z" opacity=".9"/><path d="M3.8 20.8l6.1-7.3 1.5 1.8-4.5 5.5z"/></svg>
+        arXiv <span class="soon">soon</span>
+      </a>
+      <a class="btn" href="https://github.com/liangbingzhao/MT-OPSD" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg>
+        Code <span class="soon">soon</span>
+      </a>
+      <a class="btn ghost" href="#" data-soon title="Coming soon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.7l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.7l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.7z"/><path d="M3.3 7 12 12l8.7-5M12 22V12"/></svg>
+        Models <span class="soon">soon</span>
+      </a>
+      <a class="btn ghost" href="#benchmark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+        LME-Bench <span class="soon">soon</span>
+      </a>
+    </div>
+
+    <!-- Interactive turn explorer (tiles cropped from the teaser figure) -->
+    <div class="explorer reveal" id="explorer-teaser">
+      <div class="explorer-head">
+        <div class="t">Ten turns of editing, one image
+          <small>Each turn edits the previous turn's output. Drag the slider or press play.</small>
+        </div>
+      </div>
+      <div class="panels" style="--cols:4"></div>
+      <div class="scrub">
+        <button class="play" aria-label="Play"></button>
+        <div class="track">
+          <input type="range" min="0" max="10" step="1" value="0" aria-label="Editing turn">
+          <div class="ticks"></div>
+        </div>
+        <div class="turn-readout">Turn <b>0</b></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================ TL;DR ============================ -->
+<section id="overview">
+  <div class="wrap">
+    <div class="center reveal">
+      <div class="kicker">TL;DR</div>
+      <h2>Train on the states you will <em>actually</em> see.</h2>
+      <p class="lead">
+        Editors are trained on clean images but, in multi-turn use, must edit their own imperfect outputs.
+        MT-OPSD rolls the model out on itself and distills its own clean-input editing behavior into those
+        self-generated states. It needs no multi-turn annotations, no ground-truth edits, and no stronger teacher.
+      </p>
+    </div>
+    <div class="stats">
+      <div class="stat reveal">
+        <div class="k">Success rate at turn 10 · Qwen-Image-Edit-2511</div>
+        <div class="v"><span class="from">0.03</span><span class="arrow">→</span><span class="to">0.44</span></div>
+        <div class="d">Around 15× more ten-turn sessions end with every edit correct and consistent.</div>
+      </div>
+      <div class="stat reveal">
+        <div class="k">Collapse rate at turn 10 · all three backbones</div>
+        <div class="v"><span class="from">≤0.61</span><span class="arrow">→</span><span class="to">≤0.04</span></div>
+        <div class="d">Multi-turn collapse almost disappears on Qwen, FireRed and FLUX.2-klein.</div>
+      </div>
+      <div class="stat reveal">
+        <div class="k">Single-turn quality · ImgEdit overall</div>
+        <div class="v"><span class="from">4.51</span><span class="arrow">→</span><span class="to">4.49</span></div>
+        <div class="d">Long-horizon robustness costs almost nothing in single-turn editing quality.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ABSTRACT ============================ -->
+<section class="alt">
+  <div class="wrap-text abstract reveal">
+    <div class="kicker">Abstract</div>
+    <p>
+      Instruction-based image editing has achieved strong performance in single-turn settings, yet practical editing is often
+      iterative, with each instruction applied to the output of the previous turn. We find that existing editing models degrade
+      rapidly under recursive editing and attribute this failure to a train–test mismatch in the conditioning distribution:
+      models are trained on clean source images but must repeatedly condition on their own imperfect outputs at inference time.
+      To address this, we propose <b>MT-OPSD</b>, an on-policy self-distillation framework that trains the model on
+      self-generated conditioning states with editing supervision from a clean-conditioned teacher, without requiring
+      multi-turn annotations. We further introduce <b>LME-Bench</b>, a benchmark of 100 ten-turn editing sessions for
+      evaluating long-horizon robustness. Experiments across three editing backbones show that MT-OPSD substantially improves
+      long-horizon editing success and reduces multi-turn collapse while largely preserving single-turn editing quality.
+      All code, checkpoints, and data will be publicly released.
+    </p>
+  </div>
+</section>
+
+<!-- ============================ PROBLEM ============================ -->
+<section id="problem">
+  <div class="wrap">
+    <div class="split">
+      <div class="reveal">
+        <div class="kicker">The problem</div>
+        <h2>Small errors, <em>compounded</em>.</h2>
+        <p class="lead" style="font-size:17px">
+          After a few turns, outputs develop chromatic noise, fragmented structure, or identity drift. We see this in
+          Qwen-Image-Edit, FireRed-Image-Edit and FLUX.2-klein-base, so it is a limitation of single-turn training
+          rather than a bug in any one model.
+        </p>
+        <div class="mismatch">
+          <div class="flow">
+            <span class="tag">Training</span>
+            <span class="chip clean">clean source I</span><span class="ar">→</span>
+            <span class="chip model">editor</span><span class="ar">→</span><span>edit</span>
+          </div>
+          <div class="flow">
+            <span class="tag">Inference</span>
+            <span class="chip dirty">own output I<sup>(k−1)</sup></span><span class="ar">→</span>
+            <span class="chip model">editor</span><span class="ar">→</span><span>I<sup>(k)</sup></span><span class="ar">↺</span>
+          </div>
+        </div>
+        <p style="color:var(--ink-2);font-size:15.5px">
+          Try asking an editor to <i>“make everything unchanged”</i> ten times in a row. It should act as the identity map,
+          but it drifts measurably at every turn. Errors that look negligible after one edit pile up once each output becomes
+          the next input, much like exposure bias in autoregressive generation.
+        </p>
+        <div class="callout">A train–test mismatch in the <em>conditioning</em> distribution.</div>
+      </div>
+      <figure class="reveal">
+        <div class="figure"><img src="static/images/noop.jpg" alt="Drift under identity editing: repeatedly asking Qwen-Image-Edit and OmniGen2 to leave the image unchanged produces growing artifacts over 10 turns." loading="lazy"></div>
+        <figcaption><b>Drift under identity editing.</b> Asking a model again and again to leave the image unchanged exposes
+          model-induced errors that build up across turns. Different editing models degrade in similar ways.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ METHOD ============================ -->
+<section id="method" class="alt">
+  <div class="wrap">
+    <div class="center reveal">
+      <div class="kicker">Method</div>
+      <h2>The supervision is <em>already inside</em> the model.</h2>
+      <p class="lead">
+        Given a clean input, a pretrained editor already knows how to edit. MT-OPSD transfers this clean-input behavior to
+        the degraded states the model produces for itself.
+      </p>
+    </div>
+
+    <figure class="reveal" style="margin-top:36px">
+      <div class="figure"><img src="static/images/method.png" alt="Overview of MT-OPSD: self-generated rollout states, two-branch training objective with editing and identity branches, rollout curriculum and gated teacher promotion." loading="lazy"></div>
+      <figcaption><b>Overview of MT-OPSD.</b> The student builds self-generated rollout states by applying the identity
+        instruction again and again. For each state, the identity branch uses the state itself as the target, and the editing branch
+        aligns the student (conditioned on the rollout state) with a frozen teacher (conditioned on the clean source) through
+        sparse query-based velocity matching. A rollout curriculum gradually increases rollout depth, and improved checkpoints
+        replace the teacher through gated promotion.</figcaption>
+    </figure>
+
+    <div class="steps">
+      <div class="step c1 reveal">
+        <span class="num">01 · ROLLOUT STATES</span>
+        <h3>Self-generated, error-only rollouts</h3>
+        <p>The current student applies an identity instruction <i>e</i><sub>id</sub> (“Make everything unchanged”) to its own
+          output for <i>k</i> turns, with the same sampling configuration as inference. The content stays fixed, so
+          <span class="nowrap">Ĩ<sup>(k)</sup></span> differs from <span class="nowrap">I<sup>(0)</sup></span> mainly by errors
+          the model introduced itself. Real editing instructions here would mix those errors with intended changes.</p>
+        <div class="eq">$$\tilde I^{(k)} = G_{\theta_S}\big(\tilde I^{(k-1)}, e_{\mathrm{id}}\big),\quad \tilde I^{(0)} = I^{(0)}$$</div>
+      </div>
+      <div class="step c2 reveal">
+        <span class="num">02 · TWO-BRANCH OBJECTIVE</span>
+        <h3>Stop the drift, keep the edits</h3>
+        <p>Each rollout state feeds two complementary branches, sampled at a <span class="nowrap">2 : 1</span> ratio (editing : identity).</p>
+        <div class="branches">
+          <div class="branch"><b>Editing branch</b>The student sees <span class="nowrap">Ĩ<sup>(k)</sup></span>; the teacher sees clean
+            <span class="nowrap">I<sup>(0)</sup></span>. Their velocities are matched at states the student visits.
+            <div class="eq">$$\mathcal L_{\text{edit}}=\big\|v_{\theta_S}(\bar x_{t_q},t_q,\tilde I^{(k)},e)-v_{\theta_T}(\bar x_{t_q},t_q,I^{(0)},e)\big\|^2$$</div>
+          </div>
+          <div class="branch"><b>Identity branch</b>Under <i>e</i><sub>id</sub>, the rollout state is its own target, so errors
+            stop compounding without having to restore the clean image in one step.
+            <div class="eq">$$\mathcal L_{\text{id}}=\big\|v_{\theta_S}(\tilde x_t,t,\tilde I^{(k)},e_{\mathrm{id}})-(\epsilon-\tilde x_0)\big\|^2$$</div>
+          </div>
+        </div>
+      </div>
+      <div class="step c3 reveal">
+        <span class="num">03 · ROLLOUT CURRICULUM</span>
+        <h3>Adaptive depth, no hand-tuned schedule</h3>
+        <p>Rollout depth grows by one turn only after the mean pixel drift of <span class="nowrap">Ĩ<sup>(k)</sup></span> has stayed
+          below a threshold for several steps in a row. Each increase pushes drift up and pauses progress until the model
+          catches up. Depth typically settles around 4 turns, yet the gains hold through 10-turn evaluation.</p>
+      </div>
+      <div class="step c4 reveal">
+        <span class="num">04 · GATED TEACHER PROMOTION</span>
+        <h3>Student → teacher → better student</h3>
+        <p>As the student becomes more robust than its teacher, a VLM judge periodically evaluates student checkpoints on
+          a held-out gate set. A checkpoint that beats the current teacher on long-horizon success and collapse
+          becomes the new teacher. The judge only picks checkpoints and never enters the gradient.</p>
+      </div>
+    </div>
+
+    <div class="insight reveal">
+      <div class="ts"><span class="t">Teacher · clean I⁽⁰⁾</span><span class="s">Student · own Ĩ⁽ᵏ⁾</span></div>
+      <p>Teacher and student start from the <b>same weights</b>. The only difference is the <b>input</b>, and that
+        conditioning asymmetry is where the supervision signal comes from.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BENCHMARK ============================ -->
+<section id="benchmark">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">LME-Bench</div>
+      <h2>A benchmark for <em>long</em>-horizon editing.</h2>
+      <p class="lead">
+        Existing multi-turn benchmarks stop at five turns. The Long Multi-turn Image Editing Bench has <b>100 sessions × 10
+        consecutive turns</b>, mixing local and global edits so that later local edits land on images that have already
+        been restyled or relit.
+      </p>
+    </div>
+    <div class="bench">
+      <div class="donut reveal">
+        <img src="static/images/lme_bench_categories.png" alt="LME-Bench edit-type distribution: local edits (addition, attribute change, removal, replacement, state change), global soft (color temperature, atmosphere), global hard (monochrome, style)." loading="lazy">
+        <div class="mini-stats">
+          <div><b>100</b><span>sessions</span></div>
+          <div><b>1,000</b><span>instructions</span></div>
+          <div><b>6 + 4</b><span>local + global edits / session</span></div>
+          <div><b>10</b><span>image categories</span></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="session">
+          <div class="session-head">
+            <b>Example session</b>
+            <div class="legend-chips"><span class="tchip local">local</span><span class="tchip soft">soft global</span><span class="tchip hard">hard global</span></div>
+          </div>
+          <ol>
+            <li><span class="tchip hard">hard global</span><span class="ins">Repaint the whole image as a textured oil painting with visible brushstrokes, keeping the dog and the room.</span></li>
+            <li><span class="tchip local">local</span><span class="ins">Change the wall behind the dog to a warm sage-green color.</span></li>
+            <li><span class="tchip hard">hard global</span><span class="ins">Redraw the whole image in a bold anime illustration style with clean lines and cel shading.</span></li>
+            <li><span class="tchip local">local</span><span class="ins">Add a rubber ball on the floor beside the dog.</span></li>
+            <li><span class="tchip soft">soft global</span><span class="ins">Shift the whole image to a cool blue-gray color temperature.</span></li>
+            <li><span class="tchip local">local</span><span class="ins">Make the dog lie down on the floor instead of sitting.</span></li>
+            <li><span class="tchip hard">hard global</span><span class="ins">Convert the entire image to black and white, full grayscale with no color.</span></li>
+            <li><span class="tchip local">local</span><span class="ins">Change the wooden floor into pale marble tiles.</span></li>
+            <li><span class="tchip local">local</span><span class="ins">Add a small potted plant in the corner behind the dog.</span></li>
+            <li><span class="tchip local">local</span><span class="ins">Remove the rubber ball from the floor.</span></li>
+          </ol>
+        </div>
+        <div class="metrics">
+          <div class="metric"><b>SR@k ↑</b> The fraction of sessions where <i>all</i> of the first <i>k</i> turns pass both prompt-following and consistency checks.</div>
+          <div class="metric"><b>CR@k ↓</b> The fraction of sessions that have collapsed by turn <i>k</i>, meaning two turns in a row were judged visually degraded.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ RESULTS ============================ -->
+<section id="results" class="alt">
+  <div class="wrap">
+    <div class="center reveal">
+      <div class="kicker">Results</div>
+      <h2>Stable through <em>ten</em> turns, on every backbone.</h2>
+      <p class="lead">
+        On LME-Bench, MT-OPSD raises SR@10 to 0.38–0.52 and cuts CR@10 to at most 0.04 on all three backbones,
+        while training-free fixes (Emu Edit, FreqEdit, VAE-LFA) give only model-dependent gains.
+      </p>
+    </div>
+
+    <div class="result-cards" id="result-cards"></div>
+
+    <div class="chart-card reveal" id="chart-card">
+      <div class="chart-top">
+        <div class="seg" id="bb-seg"></div>
+        <div class="legend">
+          <span><i style="background:var(--series-ours)"></i>+ MT-OPSD</span>
+          <span><i style="background:var(--series-base)"></i>Base model</span>
+          <span><i style="background:repeating-linear-gradient(90deg,var(--series-ctx) 0 3px,transparent 3px 6px)"></i>Training-free baselines</span>
+        </div>
+      </div>
+      <div class="charts">
+        <div class="chart" data-metric="sr"><h4>Success rate <span>SR@k · higher is better</span></h4></div>
+        <div class="chart" data-metric="cr"><h4>Collapse rate <span>CR@k · lower is better</span></h4></div>
+      </div>
+    </div>
+    <div class="tables reveal">
+      <div class="seg" id="tbl-seg">
+        <button class="on" data-pane="t1">LME-Bench</button>
+        <button data-pane="t2">MSE-Bench &amp; ImgEdit</button>
+      </div>
+      <figure class="pane tfig on" id="t1">
+        <div class="figure"><div class="tscroll-img"><img src="static/images/table_lme.png" alt="Quantitative comparison on LME-Bench: success rate and collapse rate at turns 3, 5, 8 and 10 for proprietary models and three open-source backbones with and without MT-OPSD." loading="lazy"></div></div>
+        <figcaption><b>Quantitative comparison on LME-Bench.</b> Success rate (SR) and collapse rate (CR) at turns 3, 5, 8, and 10.</figcaption>
+      </figure>
+      <figure class="pane tfig" id="t2">
+        <div class="figure"><div class="tscroll-img"><img src="static/images/table_mse.png" alt="Quantitative comparison on MSE-Bench and ImgEdit: per-turn success rate on MSE-Bench and single-turn ImgEdit overall score." loading="lazy"></div></div>
+        <figcaption><b>Quantitative comparison on MSE-Bench and ImgEdit.</b> Success rate at each turn on MSE-Bench under its official protocol, and the overall score on the single-turn ImgEdit benchmark.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ GALLERY ============================ -->
+<section id="gallery">
+  <div class="wrap">
+    <div class="center reveal">
+      <div class="kicker">Qualitative results</div>
+      <h2>Base models break. <em>MT-OPSD</em> keeps editing.</h2>
+      <p class="lead">
+        Selected turns from ten-turn LME-Bench sessions. Training-free baselines either inherit the base model's artifacts
+        or weaken the requested edits. Click any figure to zoom.
+      </p>
+    </div>
+    <div class="gallery">
+      <div class="tabs"><div class="seg" id="gal-seg">
+        <button class="on" data-pane="g1">Scooter</button>
+        <button data-pane="g2">Street</button>
+        <button data-pane="g3">More sessions</button>
+      </div></div>
+      <div class="pane on" id="g1">
+        <figure><div class="figure"><img src="static/images/qualitative_result.jpg" alt="Qualitative comparison on LME-Bench: scooter session across Qwen-Image-Edit, FireRed-Image-Edit and FLUX.2-klein-base with and without MT-OPSD, plus Emu Edit, FreqEdit and VAE-LFA." loading="lazy"></div>
+          <figcaption>Each backbone fails in its own way under repeated editing. <b>MT-OPSD</b> stays stable through Turn 10
+            and keeps following the editing sequence on all three backbones.</figcaption></figure>
+      </div>
+      <div class="pane" id="g2">
+        <figure class="tall"><div class="figure"><img src="static/images/appendix_morequali1.jpg" alt="Additional qualitative comparison: street session across three backbones." loading="lazy"></div>
+          <figcaption>Selected turns from a second session on all three backbones and baselines.</figcaption></figure>
+      </div>
+      <div class="pane" id="g3">
+        <figure class="tall"><div class="figure"><img src="static/images/appendix_morequali2.jpg" alt="Additional qualitative comparison: another LME-Bench session across three backbones." loading="lazy"></div>
+          <figcaption>Selected turns from a third session on all three backbones and baselines.</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ABLATION ============================ -->
+<section id="ablation" class="alt">
+  <div class="wrap">
+    <div class="split rev">
+      <div class="reveal">
+        <div class="kicker">Ablation</div>
+        <h2>Why the <em>identity</em> branch matters.</h2>
+        <p class="lead" style="font-size:17px">
+          Without the identity branch, the model still follows instructions, but it over-edits and slowly rewrites content
+          nobody asked it to touch. Scrub through the turns to watch identity and layout drift.
+        </p>
+        <figure class="abl-table tfig">
+          <div class="figure"><div class="tscroll-img"><img src="static/images/table_ablation.png" alt="Ablation on key components of MT-OPSD on Qwen-Image-Edit-2511." loading="lazy"></div></div>
+          <figcaption><b>Ablation on key components</b> (Qwen-Image-Edit-2511). SFT editing supervision replaces on-policy velocity matching with flow-matching toward teacher-generated images. The curriculum ablation fixes rollout depth at four.</figcaption>
+        </figure>
+      </div>
+      <div class="explorer reveal" id="explorer-abl" style="margin-top:0">
+        <div class="explorer-head">
+          <div class="t">MT-OPSD vs. w/o identity branch<small>Same ten-turn instruction sequence.</small></div>
+          <div class="seg" data-sessions>
+            <button class="on" data-session="chef">Chef</button>
+            <button data-session="plane">Airplane</button>
+          </div>
+        </div>
+        <div class="panels" style="--cols:2"></div>
+        <div class="scrub">
+          <button class="play" aria-label="Play"></button>
+          <div class="track">
+            <input type="range" min="0" max="10" step="1" value="0" aria-label="Editing turn">
+            <div class="ticks"></div>
+          </div>
+          <div class="turn-readout">Turn <b>0</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ BIBTEX ============================ -->
+<section id="bibtex">
+  <div class="wrap-text reveal">
+    <div class="kicker">Citation</div>
+    <h2>BibTeX</h2>
+    <div class="bib">
+      <button class="copy" id="copy-bib">Copy</button>
+<pre id="bib-text">@article{zhao2026mtopsd,
+  title   = {On-Policy Self-Distillation for Multi-Turn Image Editing},
+  author  = {Zhao, Liangbing and Zhuo, Le and Elhoseiny, Mohamed},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    This website is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br>
+    Adapted from the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a> and <a href="https://nerfies.github.io" target="_blank" rel="noopener">Nerfies</a>.
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox"><img alt=""></div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script defer src="static/js/main.js"></script>
+</body>
+</html>
