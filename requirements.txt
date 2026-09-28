@@ -1,0 +1,14 @@
+# tested with python 3.10, torch 2.11 + CUDA 12.8 on H100/H200
+torch>=2.6
+diffusers @ git+https://github.com/huggingface/diffusers@c8c84018e0d8704e44d68ff18b634f1f61a717f6
+transformers==5.5.4
+peft==0.19.1
+accelerate==1.13.0
+safetensors
+pyarrow
+numpy
+pillow
+pyyaml
+# optional
+wandb        # --wandb logging
+openai       # GPT-4o judge of the gate worker

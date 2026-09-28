@@ -1,0 +1,63 @@
+# MT-OPSD on FLUX.2 [klein] base 9B.
+# Differences from the Qwen recipe: lr 1e-4 (the Qwen lr is far too large for this
+# backbone), high_t queries, and 30-step sampling for rollout / eval / deployment instead of
+# the native 50 (shorter identity chains drift less, so the curriculum can grow past depth 3).
+# Evaluate and deploy with --steps 30 as well: FLUX.2's timestep shift depends on the step count.
+#   bash scripts/train.sh configs/flux2_klein_base_9b.yaml
+#   bash scripts/gate_worker.sh <output_dir>
+model: flux2-klein-base-9b
+pretrained_path: null                # null -> black-forest-labs/FLUX.2-klein-base-9B from the HF hub
+train_area: 262144
+
+data_root: /path/to/OmniEdit-Filtered-1.2M
+output_dir: outputs/flux2_klein_base_9b
+
+rank: 32
+lora_alpha: 64
+target_modules: [to_q, to_k, to_v, to_out.0, add_q_proj, add_k_proj, add_v_proj, to_add_out,
+                 linear_in, linear_out, to_qkv_mlp_proj,
+                 single_transformer_blocks.0.attn.to_out, single_transformer_blocks.1.attn.to_out,
+                 single_transformer_blocks.2.attn.to_out, single_transformer_blocks.3.attn.to_out,
+                 single_transformer_blocks.4.attn.to_out, single_transformer_blocks.5.attn.to_out,
+                 single_transformer_blocks.6.attn.to_out, single_transformer_blocks.7.attn.to_out,
+                 single_transformer_blocks.8.attn.to_out, single_transformer_blocks.9.attn.to_out,
+                 single_transformer_blocks.10.attn.to_out, single_transformer_blocks.11.attn.to_out,
+                 single_transformer_blocks.12.attn.to_out, single_transformer_blocks.13.attn.to_out,
+                 single_transformer_blocks.14.attn.to_out, single_transformer_blocks.15.attn.to_out,
+                 single_transformer_blocks.16.attn.to_out, single_transformer_blocks.17.attn.to_out,
+                 single_transformer_blocks.18.attn.to_out, single_transformer_blocks.19.attn.to_out,
+                 single_transformer_blocks.20.attn.to_out, single_transformer_blocks.21.attn.to_out,
+                 single_transformer_blocks.22.attn.to_out, single_transformer_blocks.23.attn.to_out]
+
+lr: 1.0e-4
+max_steps: 2000
+max_grad_norm: 1.0
+
+rollout_steps: 30
+rollout_cfg: 4.0
+noop_prompt: "make everything unchange"
+
+edit_ratio: 0.667
+noop_loss_scale: 10
+
+opd_steps: 10
+opd_cfg: 4.0
+opd_k: 2
+opd_query_bias: high_t
+
+turns_curriculum: true
+turns_curriculum_init: 2
+turns_curriculum_max: 10
+turns_curriculum_drift: 10.0
+turns_curriculum_patience: 10
+
+gate_promote: true
+gate_sr_bar: 2
+gate_col_unlock: 3
+
+eval_every: 50
+drift_steps: 30
+mt_eval: true                        # sentinel sessions, plain vs Emu-thresholded (monitoring only)
+save_every: 50
+log_every: 10
+seed: 42

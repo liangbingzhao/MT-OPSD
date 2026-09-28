@@ -1,0 +1,22 @@
+{
+ "meta": {
+  "description": "Sentinel session for the in-training multi-turn metric (mt_eval): each is edited twice from the same source, with and without Emu Edit sequential thresholding, and the per-turn difference between the two chains is logged. Monitoring only; never used for the loss or for teacher promotion."
+ },
+ "items": [
+  {
+   "id": "0026",
+   "category": "interior",
+   "source_prompt": "a cozy living room with a gray sofa",
+   "turns": [
+    "add a round wooden coffee table",
+    "change the sofa to blue",
+    "hang a large painting on the wall",
+    "add a patterned rug under the table",
+    "make it evening with a lit floor lamp",
+    "add a tall bookshelf against the wall",
+    "change the wall painting to a round mirror",
+    "make it bright morning daylight"
+   ]
+  }
+ ]
+}

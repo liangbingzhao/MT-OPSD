@@ -1,0 +1,676 @@
+{
+ "meta": {
+  "description": "Gate set for gated teacher promotion: 23 ten-turn editing sessions on Z-Image-Turbo-generated 1024x1024 source images (images/<id>.png). Source images and sessions are disjoint from LME-Bench (only the standardized global-edit phrasings are shared); used only to select teacher checkpoints during training.",
+  "n": 23,
+  "turns_per_item": 10
+ },
+ "items": [
+  {
+   "id": "gate01",
+   "category": "pet",
+   "gen_prompt": "a tabby cat wearing a blue collar sitting on a wooden windowsill beside a small potted cactus, city buildings visible through the window",
+   "turns": [
+    "Repaint the whole scene as a textured oil painting with visible brushstrokes.",
+    "Change the cat's blue collar to bright red.",
+    "Shift the whole image to a warm amber color temperature.",
+    "Add a small bird perched outside on the window ledge.",
+    "Increase the overall contrast for a punchy look.",
+    "Make the cat stand upright on its four legs instead of sitting.",
+    "Convert the entire image to black and white, full grayscale with no color.",
+    "Replace the potted cactus with a small fern in the same pot.",
+    "Add a second, smaller cat sitting beside the first cat.",
+    "Remove the bird from the window ledge."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate02",
+   "category": "wild",
+   "gen_prompt": "a red fox standing in a snowy forest clearing beside a fallen log",
+   "turns": [
+    "Redraw the whole scene as a detailed pencil sketch with graphite shading.",
+    "Change the fox's fur from red to silver-gray.",
+    "Shift the whole image to a cool blue-gray color temperature.",
+    "Add a raven perched on the fallen log.",
+    "Increase the overall contrast for a punchy look.",
+    "Break the fallen log in half, the two pieces lying apart in the snow.",
+    "Recolor the entire image in warm sepia tones, a vintage monochrome look.",
+    "Make the fox sit on its haunches.",
+    "Add a second fox standing behind the first one.",
+    "Remove the raven from the log."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate03",
+   "category": "person",
+   "gen_prompt": "a young woman in a yellow raincoat holding a closed umbrella, standing on a quiet street on a clear day",
+   "turns": [
+    "Redraw the whole scene in a bold anime illustration style with clean lines and cel shading.",
+    "Change her yellow raincoat to a deep green raincoat.",
+    "Bring heavy rain over the whole street, rain streaking down and pooling on the pavement, the calm overcast air gone.",
+    "Change the transparent umbrella to a solid red umbrella.",
+    "Brighten the whole image for an airy, high-key look.",
+    "Add a shoulder bag hanging at her side.",
+    "Convert the entire image to black and white, full grayscale with no color.",
+    "Add a small dog on a leash standing beside her.",
+    "Remove the umbrella from her hands.",
+    "Make her crouch down to pet the dog."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate04",
+   "category": "food",
+   "gen_prompt": "a bowl of tomato soup with a swirl of cream on a rustic wooden table, a slice of bread beside it",
+   "turns": [
+    "Repaint the whole scene as a soft watercolor with visible paper texture.",
+    "Change the tomato soup to a green pea soup, keeping the cream swirl.",
+    "Shift the whole image to a cool blue-gray color temperature.",
+    "Add a small pepper shaker beside the bowl.",
+    "Lower the overall contrast for a soft, faded look.",
+    "Replace the bread slices with a single bread roll.",
+    "Recolor the entire image in warm sepia tones, a vintage monochrome look.",
+    "Fill the bowl to the brim so the soup nearly overflows.",
+    "Add a folded cloth napkin next to the bowl.",
+    "Remove the cream swirl from the soup."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate05",
+   "category": "vehicle",
+   "gen_prompt": "a red vintage scooter parked on a cobblestone street in front of a small cafe with a striped awning",
+   "turns": [
+    "Repaint the whole scene as blocky retro pixel art with a limited palette.",
+    "Repaint the red scooter in a glossy teal color.",
+    "Shift the whole image to a cool blue-gray color temperature.",
+    "Add a wicker basket mounted on the scooter's rear rack.",
+    "Brighten the whole image for an airy, high-key look.",
+    "Change the cobblestone street to smooth asphalt.",
+    "Convert the entire image to black and white, full grayscale with no color.",
+    "Turn the scooter's front wheel to face the viewer.",
+    "Add a helmet resting on the scooter's seat.",
+    "Remove the striped awning from the cafe front."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate06",
+   "category": "interior",
+   "gen_prompt": "a cozy reading corner with a green armchair, a floor lamp, a small bookshelf, and a striped rug",
+   "turns": [
+    "Repaint the whole scene as a textured oil painting with visible brushstrokes.",
+    "Change the green armchair to a burgundy armchair.",
+    "Repaint the whole scene as blocky retro pixel art with a limited palette.",
+    "Add an open book lying on the seat of the armchair.",
+    "Brighten the whole image for an airy, high-key look.",
+    "Make the bookshelf taller with two extra shelves.",
+    "Convert the entire image to black and white, full grayscale with no color.",
+    "Replace the striped rug with a plain round rug.",
+    "Add a sleeping cat curled on the rug.",
+    "Remove the floor lamp from the corner."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate07",
+   "category": "object",
+   "gen_prompt": "a brass pocket watch lying open on a dark brown leather journal, a fountain pen beside it",
+   "turns": [
+    "Repaint the whole scene as a textured oil painting with visible brushstrokes.",
+    "Change the leather journal's cover from dark brown to oxblood red.",
+    "Shift the whole image to a cool blue-gray color temperature.",
+    "Add a pair of round reading glasses beside the fountain pen.",
+    "Increase the overall contrast for a punchy look.",
+    "Attach a long brass chain to the watch, trailing across the journal cover.",
+    "Convert the entire image to black and white, full grayscale with no color.",
+    "Replace the fountain pen with a wooden pencil.",
+    "Close the pocket watch, its lid shut.",
+    "Remove the reading glasses."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate08",
+   "category": "plant",
+   "gen_prompt": "a monstera plant in a white ceramic pot on a wooden stool against a cream wall",
+   "turns": [
+    "Repaint the whole scene as a soft watercolor with visible paper texture.",
+    "Change the white ceramic pot to a cobalt blue pot.",
+    "Shift the whole image to a cool blue-gray color temperature.",
+    "Add a shallow clay saucer under the plant pot.",
+    "Brighten the whole image for an airy, high-key look.",
+    "Add two more leaves to the monstera, making it fuller.",
+    "Recolor the entire image in warm sepia tones, a vintage monochrome look.",
+    "Change the wooden stool to a metal stool.",
+    "Add a framed botanical print hanging on the wall behind the plant.",
+    "Remove the saucer from under the pot."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate09",
+   "category": "urban",
+   "gen_prompt": "a narrow alley with a bicycle leaning against a brick wall, laundry lines overhead, on a dry overcast day",
+   "turns": [
+    "Redraw the whole scene in a bold anime illustration style with clean lines and cel shading.",
+    "Repaint the bicycle frame in bright orange.",
+    "Bring heavy rain over the whole alley, rain streaking down and the bricks turning wet and glossy, the dry overcast day gone.",
+    "Add a stray cat sitting beside the bicycle.",
+    "Shift the whole image to a warm amber color temperature.",
+    "Remove the laundry lines overhead.",
+    "Convert the entire image to black and white, full grayscale with no color.",
+    "Knock the bicycle down so it lies on the ground.",
+    "Add an open umbrella abandoned beside the bicycle.",
+    "Remove the stray cat from beside the bicycle."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate10",
+   "category": "pet",
+   "gen_prompt": "a corgi lying on a round cushion in a sunlit living room, a red ball near its paws",
+   "turns": [
+    "Repaint the whole scene as a textured oil painting with visible brushstrokes.",
+    "Change the red ball to a purple ball.",
+    "Repaint the whole scene as blocky retro pixel art with a limited palette.",
+    "Add a food bowl on the floor near the cushion.",
+    "Darken the whole image for a low-key, moody look.",
+    "Have the corgi sit upright on the cushion.",
+    "Convert the entire image to black and white, full grayscale with no color.",
+    "Replace the round cushion with a square plaid cushion.",
+    "Add a chew toy bone next to the food bowl.",
+    "Remove the ball from the scene."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate11",
+   "category": "food",
+   "gen_prompt": "a stack of pancakes with a pat of butter on top, on a white plate with a glass of orange juice behind it, morning light",
+   "turns": [
+    "Repaint the whole scene as a soft watercolor with visible paper texture.",
+    "Turn the orange juice into red berry juice.",
+    "Redraw the whole scene in a bold anime illustration style with clean lines and cel shading.",
+    "Add a small jug of maple syrup beside the plate.",
+    "Lower the overall contrast for a soft, faded look.",
+    "Add two more pancakes to the stack, making it taller.",
+    "Convert the entire image to black and white, full grayscale with no color.",
+    "Remove the pat of butter from the top pancake.",
+    "Add a fork resting on the edge of the plate.",
+    "Cut a wedge out of the pancake stack, showing the layers."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate12",
+   "category": "wild",
+   "gen_prompt": "an elephant walking across a dry savanna at midday, a lone acacia tree in the background",
+   "turns": [
+    "Bring a heavy thunderstorm over the whole savanna, dark clouds and rain pouring down, the clear midday sky gone.",
+    "Add a white egret riding on the elephant's back.",
+    "Redraw the whole scene as a detailed pencil sketch with graphite shading.",
+    "Shrink the acacia tree to a small sapling on the horizon.",
+    "Shift the whole image to a warm amber color temperature.",
+    "Raise the elephant's trunk high in the air.",
+    "Repaint the whole scene as a textured oil painting with visible brushstrokes.",
+    "Add a large fallen log lying in the foreground.",
+    "Add a baby elephant trailing close behind the adult.",
+    "Remove the egret from the elephant's back."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate13",
+   "category": "interior",
+   "gen_prompt": "a kitchen counter with a copper kettle on a gas stove, a jar of wooden spoons, and mugs hanging on hooks",
+   "turns": [
+    "Repaint the whole scene as a soft watercolor with visible paper texture.",
+    "Change the copper kettle to a matte black kettle.",
+    "Shift the whole image to a warm amber color temperature.",
+    "Add a cutting board with sliced bread on the counter.",
+    "Increase the overall contrast for a punchy look.",
+    "Remove one of the hanging mugs, leaving a single mug on the rail.",
+    "Convert the entire image to black and white, full grayscale with no color.",
+    "Put the kettle on the boil, steam rising from its spout.",
+    "Replace the jar of wooden spoons with a knife block.",
+    "Remove the cutting board from the counter."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate14",
+   "category": "person",
+   "gen_prompt": "an elderly man with a gray beard sitting on a park bench feeding pigeons, wearing a brown coat and a flat cap",
+   "turns": [
+    "Repaint the whole scene as a textured oil painting with visible brushstrokes.",
+    "Change his brown coat to a navy blue coat.",
+    "Shift the whole image to a cool blue-gray color temperature.",
+    "Add round wire-rimmed glasses on his face.",
+    "Lower the overall contrast for a soft, faded look.",
+    "Add a folded newspaper lying on the ground beside his feet.",
+    "Recolor the entire image in warm sepia tones, a vintage monochrome look.",
+    "Have him stand up from the bench, still holding breadcrumbs.",
+    "Replace his flat cap with a wide-brim fedora.",
+    "Remove all the pigeons from the scene."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate15",
+   "category": "vehicle",
+   "gen_prompt": "a yellow taxi parked at a city curb at dusk, storefront neon signs beginning to glow",
+   "turns": [
+    "Repaint the whole scene as blocky retro pixel art with a limited palette.",
+    "Repaint the taxi from yellow to mint green.",
+    "Deepen the dusk into full night; the street goes dark and the taxi is lit only by the glow from the shop windows behind it, the last daylight gone.",
+    "Add a driver leaning against the taxi's door.",
+    "Shift the whole image to a warm amber color temperature.",
+    "Add a black-and-white checkered stripe along the taxi's side.",
+    "Convert the entire image to black and white, full grayscale with no color.",
+    "Open the taxi's front door.",
+    "Remove the illuminated sign from the taxi's roof.",
+    "Remove the driver from the scene."
+   ],
+   "labels": [
+    "hard",
+    "local",
+    "hard",
+    "local",
+    "soft",
+    "local",
+    "hard",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate16",
+   "category": "interior",
+   "gen_prompt": "a home office desk with a silver laptop, a white mug, a green desk lamp, a stack of three books, and a corkboard with pinned notes on the wall",
+   "turns": [
+    "Change the white mug to a yellow mug.",
+    "Add a potted succulent beside the laptop.",
+    "Make the stack of books noticeably taller.",
+    "Replace the green desk lamp with a brass banker's lamp.",
+    "Close the laptop's lid.",
+    "Add a red pushpin note in the center of the corkboard.",
+    "Change the white desk surface to a warm oak wood top.",
+    "Add a pair of headphones resting on the closed laptop.",
+    "Remove the mug from the desk.",
+    "Knock the stack of books over, spilling them across the desk."
+   ],
+   "labels": [
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate17",
+   "category": "food",
+   "gen_prompt": "a breakfast table with a plate of scrambled eggs and toast, a glass of milk, a bowl of strawberries, and a folded newspaper",
+   "turns": [
+    "Change the glass of milk to a glass of orange juice.",
+    "Add a striped ceramic salt shaker beside the plate.",
+    "Replace the small strawberry bowl with a much larger, empty glass bowl.",
+    "Replace the folded newspaper with an open magazine.",
+    "Add a bite mark to one slice of toast.",
+    "Change the plate from white to sky blue.",
+    "Fill the large glass bowl to the brim with strawberries.",
+    "Add a honey jar with a wooden dipper next to the toast.",
+    "Remove the scrambled eggs, leaving the toast alone on the plate.",
+    "Knock the salt shaker over on its side."
+   ],
+   "labels": [
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate18",
+   "category": "object",
+   "gen_prompt": "a garage workbench with a claw hammer, three screwdrivers in a row, a red toolbox, a glass jar of nails, and a coiled extension cord",
+   "turns": [
+    "Change the red toolbox to a forest green toolbox.",
+    "Add a yellow measuring tape beside the hammer.",
+    "Add more screwdrivers to the row.",
+    "Replace the glass jar of nails with a metal tin of bolts.",
+    "Open the toolbox lid, tools visible inside.",
+    "Change the workbench top from wood to brushed steel.",
+    "Make the hammer larger with a longer handle.",
+    "Add a pegboard with hanging wrenches on the wall behind the bench.",
+    "Remove the coiled cords from the workbench.",
+    "Scatter a few loose bolts across the benchtop."
+   ],
+   "labels": [
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate19",
+   "category": "urban",
+   "gen_prompt": "a street market stall with crates of apples and oranges, a hanging brass scale, a striped canvas awning, and a chalkboard price sign",
+   "turns": [
+    "Change the striped awning to a solid dark green awning.",
+    "Add a crate of lemons beside the oranges.",
+    "Make the chalkboard price sign larger.",
+    "Replace the hanging brass scale with a modern digital scale.",
+    "Hang a bunch of bananas from the awning frame.",
+    "Change the apple crate from wood to black plastic.",
+    "Clear most of the oranges away, leaving just a few in the crate.",
+    "Add a paper bag of walnuts resting on the apple crate.",
+    "Remove the chalkboard price sign.",
+    "Remove the crate of lemons from the stall."
+   ],
+   "labels": [
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate20",
+   "category": "interior",
+   "gen_prompt": "a living room with a gray sofa, two orange cushions, a glass coffee table holding a vase of tulips, a bookshelf, and a round wall clock",
+   "turns": [
+    "Change the two orange cushions to teal cushions.",
+    "Add a knitted throw blanket draped over the sofa arm.",
+    "Add another cushion to the sofa.",
+    "Replace the vase of tulips with a bowl of green apples.",
+    "Make the wall clock larger.",
+    "Change the glass coffee table to a dark walnut table.",
+    "Add a floor-standing reading lamp beside the sofa.",
+    "Change the sofa's gray fabric upholstery to brown leather.",
+    "Remove the round wall clock.",
+    "Drop one green apple onto the table beside the bowl."
+   ],
+   "labels": [
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate21",
+   "category": "food",
+   "gen_prompt": "a kitchen counter with a wooden cutting board holding a whole tomato and a green bell pepper, a steel pot on the stove, a chef's knife, and a hanging kitchen towel",
+   "turns": [
+    "Change the bell pepper from green to red.",
+    "Add a garlic bulb on the cutting board.",
+    "Slice the tomato into neat rounds on the board.",
+    "Replace the steel pot with a black cast-iron skillet.",
+    "Add steam rising from the skillet.",
+    "Change the hanging towel to a solid navy towel.",
+    "Replace the chef's knife with a heavy cleaver.",
+    "Add a pinch bowl of coarse salt beside the board.",
+    "Peel the garlic bulb into loose cloves on the board.",
+    "Remove the tomato slices from the board."
+   ],
+   "labels": [
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate22",
+   "category": "object",
+   "gen_prompt": "a picnic blanket in a park with a wicker basket, two sandwiches on a plate, a steel thermos, three red apples, and a frisbee",
+   "turns": [
+    "Change the frisbee to a bright blue frisbee.",
+    "Add a bunch of green grapes beside the apples.",
+    "Remove one apple from the group, leaving the rest.",
+    "Replace the steel thermos with a glass lemonade pitcher.",
+    "Open the wicker basket's lid.",
+    "Change the picnic blanket to a red-and-white checkered blanket.",
+    "Add more sandwiches to the plate.",
+    "Add a small portable speaker on the blanket corner.",
+    "Remove the frisbee.",
+    "Take a bite out of one sandwich, leaving it on the plate."
+   ],
+   "labels": [
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local"
+   ]
+  },
+  {
+   "id": "gate23",
+   "category": "vehicle",
+   "gen_prompt": "a suburban driveway with a silver hatchback car, a kid's bicycle with training wheels, a green garden hose coiled on the wall, two clay flower pots, and a white mailbox",
+   "turns": [
+    "Repaint the silver hatchback in glossy burgundy.",
+    "Add a soccer ball resting against the flower pots.",
+    "Add another clay flower pot to the row.",
+    "Replace the kid's bicycle with a red tricycle.",
+    "Open the car's rear hatch.",
+    "Change the white mailbox to a black mailbox.",
+    "Uncoil the garden hose so it trails across the driveway.",
+    "Add a garden gnome beside the mailbox.",
+    "Remove the soccer ball.",
+    "Remove the wall lantern beside the garage door."
+   ],
+   "labels": [
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local",
+    "local"
+   ]
+  }
+ ]
+}

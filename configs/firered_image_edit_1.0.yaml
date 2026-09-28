@@ -1,0 +1,51 @@
+# MT-OPSD on FireRed-Image-Edit-1.0.
+# Capping the rollout depth at 4 is what makes this backbone work: with a deeper cap it drifts
+# into an over-smoothed solution. Promotion is stricter than for Qwen (gate_sr_bar 3), and the
+# gate skips checkpoints before 240 samples, whose gate scores are too noisy to promote on.
+#   bash scripts/train.sh configs/firered_image_edit_1.0.yaml
+#   bash scripts/gate_worker.sh <output_dir>          # separate job, 1-2 GPUs + OPENAI_API_KEY
+model: firered-image-edit-1.0
+pretrained_path: null                # null -> FireRedTeam/FireRed-Image-Edit-1.0 from the HF hub
+train_area: 262144
+
+data_root: /path/to/OmniEdit-Filtered-1.2M
+output_dir: outputs/firered_image_edit_1.0
+
+rank: 32
+lora_alpha: 64
+target_modules: [to_q, to_k, to_v, add_q_proj, add_k_proj, add_v_proj, to_out.0, to_add_out,
+                 img_mlp.net.2, img_mod.1, txt_mlp.net.2, txt_mod.1]
+
+lr: 3.0e-4
+max_steps: 2000
+max_grad_norm: 1.0
+
+rollout_steps: 30
+rollout_cfg: 4.0
+noop_prompt: "make everything unchange"
+
+edit_ratio: 0.667
+noop_loss_scale: 10
+
+opd_steps: 10
+opd_cfg: 4.0
+opd_k: 2
+opd_query_bias: mid_t
+
+turns_curriculum: true
+turns_curriculum_init: 2
+turns_curriculum_max: 4
+turns_curriculum_drift: 10.0
+turns_curriculum_patience: 10
+
+gate_promote: true
+gate_sr_bar: 3
+gate_col_unlock: 5
+gate_min_step: 240
+
+eval_every: 50
+drift_steps: 30
+mt_eval: true                        # sentinel sessions, plain vs Emu-thresholded (monitoring only)
+save_every: 50
+log_every: 10
+seed: 42
