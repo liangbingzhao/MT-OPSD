@@ -3,7 +3,7 @@
 
 
 <p align="center">
-  <img src="https://img.shields.io/badge/arXiv-Coming_Soon-b31b1b.svg" alt="arXiv">
+  <a href="https://arxiv.org/abs/2609.35611"><img src="https://img.shields.io/badge/arXiv-2609.35611-b31b1b.svg" alt="arXiv"></a>
   <a href="https://liangbingzhao.github.io/MT-OPSD/"><img src="https://img.shields.io/badge/Project-Page-blue" alt="Project Page"></a>
   <a href="https://huggingface.co/metazlb/MT-OPSD"><img src="https://img.shields.io/badge/🤗-MT--OPSD-yellow" alt="Model"></a>
   <a href="https://huggingface.co/datasets/metazlb/LME-Bench"><img src="https://img.shields.io/badge/🤗-LME--Bench-yellow" alt="LME-Bench"></a>
@@ -230,9 +230,13 @@ This codebase builds on [diffusers](https://github.com/huggingface/diffusers) an
 If you find this work useful for your research and applications, please cite using this BibTeX:
 
 ```bibtex
-@article{zhao2026mtopsd,
-  title={MT-OPSD: On-Policy Self-Distillation for Multi-Turn Image Editing},
-  author={Zhao, Liangbing and Zhuo, Le and Elhoseiny, Mohamed},
-  year={2026}
+@misc{zhao2026onpolicyselfdistillationmultiturnimage,
+  title         = {On-Policy Self-Distillation for Multi-Turn Image Editing},
+  author        = {Liangbing Zhao and Le Zhuo and Mohamed Elhoseiny},
+  year          = {2026},
+  eprint        = {2609.35611},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  url           = {https://arxiv.org/abs/2609.35611}
 }
 ```
