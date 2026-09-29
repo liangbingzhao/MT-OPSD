@@ -21,7 +21,6 @@ static/images/           figures converted from the paper PDFs
 static/images/turns/     per-turn tiles for the interactive explorers
 ```
 
-## TODO before release
+## TODO
 
-- Replace the placeholder `href="#"` links marked `data-soon` in `index.html` (Paper / arXiv) and remove their `soon` tags.
-- Update the BibTeX entry once the arXiv ID is available.
+- Swap the **Paper** button link in `index.html` from arXiv to the Hugging Face Daily Papers page once it is available.
