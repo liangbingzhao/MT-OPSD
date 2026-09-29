@@ -39,6 +39,7 @@ No multi-turn annotations, no ground-truth edits and no stronger teacher are nee
 
 ## 🔥 News
 
+- **[2026/9/29]** — Release [paper](https://huggingface.co/papers/2609.35611).
 - **[2026/9/29]** — Release the training and inference code, checkpoints for Qwen-Image-Edit-2511, FireRed-Image-Edit-1.0 and FLUX.2 [klein] base 9B, and LME-Bench.
 
 ## ✨ Quick Start
