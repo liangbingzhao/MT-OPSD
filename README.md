@@ -20,7 +20,3 @@ static/js/main.js        turn explorers, charts, tables (result numbers live her
 static/images/           figures converted from the paper PDFs
 static/images/turns/     per-turn tiles for the interactive explorers
 ```
-
-## TODO
-
-- Swap the **Paper** button link in `index.html` from arXiv to the Hugging Face Daily Papers page once it is available.
